@@ -15,6 +15,10 @@ export default class Login extends Component {
     header:null,
   };
 
+  _onLogin() {
+      this.props.navigation.navigate('Main')
+  }
+
   render() {
     return (
         <View style={styles.container}>
@@ -41,7 +45,7 @@ export default class Login extends Component {
                 underlineColorAndroid="transparent">
             </TextInput>
 
-            <TouchableOpacity style={styles.btnPrimary}>
+            <TouchableOpacity style={styles.btnPrimary} onPress={this._onLogin.bind(this)}>
                 <Text style={styles.btnPrimaryText}>LOG IN</Text>                
             </TouchableOpacity>
 
