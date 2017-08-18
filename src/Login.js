@@ -97,21 +97,12 @@ export default class Login extends Component {
                 color:'#aaa', 
                 textAlign:'center'}}>Atau masuk dengan</Text>
 
-            <View style={{
-                flex:1,
-                flexDirection:'row',
-                alignSelf:'center'
-            }}>
                 <Button 
                     backgroundColor="#3B5998"
                     marginRight={10}
                     onPress={()=>{this.facebookSignIn()}}
                     label="FACEBOOK"/>
 
-                <Button 
-                    backgroundColor="#d34836"
-                    label="GOOGLE"/>
-            </View>
             
         </View>
     )
