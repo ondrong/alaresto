@@ -109,18 +109,15 @@ export default class Nearby extends Component {
 
   _renderHeader(){
         return(
-            <View style={{height:55,flexDirection:'row', backgroundColor:'#4caf50', elevation:2}}>
-                <TouchableOpacity style={{marginVertical:13}}
-                    onPress={()=>{}}>
-                    <Image style={{flex:1, resizeMode:'contain'}} source={require('./assets/ic_menu.png')}/>
+            <View style={{height:55,flexDirection:'row', backgroundColor:'#4caf50'}}>
+                <TouchableOpacity
+                    onPress={()=>{this.props.navigation.goBack()}}>
+                    <Image style={{flex:1, height:25, width:25, margin:15, resizeMode:'contain'}} source={require('./assets/ic_left_arrow.png')}/>
                 </TouchableOpacity>
-                <View style={{flex:1, marginVertical:15}}>
-                    {/* <Text style={{fontWeight:'bold', fontSize:16, textAlign:'center',color:'white'}}>alaResto</Text> */}
-                    <Image style={{flex:1, resizeMode:'contain', alignSelf:'center'}} source={require('./assets/logo-white.png')}/>
-                </View>
-                <TouchableOpacity style={{marginVertical:10,padding:5}}
+                <Image style={{flex:1, height:25, marginVertical:15, resizeMode:'contain'}} source={require('./assets/logo-white.png')}/>
+                <TouchableOpacity
                     onPress={()=>{}}>
-                    <Image style={{flex:1, resizeMode:'contain'}} source={require('./assets/ic_search.png')}/>
+                    <Image style={{flex:1, height:25, width:25, margin:15, resizeMode:'contain'}} source={require('./assets/ic_search.png')}/>
                 </TouchableOpacity>
             </View>
         )
