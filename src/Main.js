@@ -8,6 +8,7 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
+  TouchableNativeFeedback,
   ListView,
   View
 } from 'react-native';
@@ -152,10 +153,18 @@ export default class Main extends Component {
                         {this._renderLoc()}
 
                         <View style={{flexDirection:'row',paddingHorizontal:5}}>
+                            
                             <View style={styles.card}>
-                                <Image style={styles.cardImage} source={require('./assets/main_nearby.png')}/>                                
-                                <Text style={styles.cardText}>Terdekat</Text> 
+                                <TouchableNativeFeedback
+                                        onPress={()=>{this.props.navigation.navigate('Nearby')}}
+                                        background={TouchableNativeFeedback.Ripple('#4caf5055', true)}>
+                                    <View style={{alignItems:'center'}}>
+                                            <Image style={styles.cardImage} source={require('./assets/main_nearby.png')}/>                                
+                                            <Text style={styles.cardText}>Terdekat</Text>
+                                    </View>
+                                </TouchableNativeFeedback>
                             </View>
+
                             <View style={styles.card}>
                                 <Image style={styles.cardImage} source={require('./assets/main_save.png')}/>                                
                                 <Text style={styles.cardText}>Hemat</Text> 

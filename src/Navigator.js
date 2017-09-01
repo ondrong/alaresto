@@ -5,7 +5,7 @@ import Login from './Login';
 import Main from './Main';
 import Nearby from './Nearby';
 
-export const alaResto = StackNavigator({
+export const Navigator = StackNavigator({
     SplashScreen : { screen: SplashScreen},
     Login: { screen: Login },
     Main: { screen: Main },

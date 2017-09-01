@@ -3,18 +3,23 @@ import {
   Alert,
   AppRegistry,
   AsyncStorage,
+  Dimensions,
   Image,
   StyleSheet,
   StatusBar,
   Text,
   TouchableOpacity,
+  TouchableNativeFeedback,
   ListView,
   View
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import CachedImage from 'react-native-cached-image';
 
 import Button from './lib/Button';
 
+const {height, width} = Dimensions.get('screen');
+const apikey = 'AIzaSyAAlaQYRh76IHjDOl88x9TQO1DGnlEyCI8';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 export default class Nearby extends Component {
@@ -25,20 +30,20 @@ export default class Nearby extends Component {
     }
 
     //get current position
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                console.log(position);
-                this.setState({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    // posReady: true,
-                    error: null,
-                });
-                this.getPlaces();                
-            },
-            (error) => this.setState({ error: error.message }),
-            { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
-        );    
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            console.log(position);
+            this.setState({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                // posReady: true,
+                error: null,
+            });
+            this.getPlaces();                
+        },
+        (error) => this.setState({ error: error.message }),
+        { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
+    );
   }
 
 
@@ -50,7 +55,7 @@ export default class Nearby extends Component {
   }
 
   getPlaces(){
-      return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&radius=500&type=restaurant&key=AIzaSyAAlaQYRh76IHjDOl88x9TQO1DGnlEyCI8',{
+      return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&radius=500&type=restaurant&key='+apikey,{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -61,12 +66,15 @@ export default class Nearby extends Component {
             // console.log(response);
             if(response.ok){
                 response.json().then((data)=>{
-                    // console.log(data);
-                    this.setState({
-                        dataSource: this.state.dataSource.cloneWithRows(data.results),
-                        isLoading: false,                                                                        
+                    data.results.map(async (item,index)=>{
+                        if(item.photos){
+                            item.photo = await this.getPhoto(item.photos[0].photo_reference);                            
+                        }
+                        
+                        return item;                     
                     });
-                    console.log(this.state.dataSource);
+                    this.setState({dataSource: ds.cloneWithRows(data.results)});
+                    console.log(data.results);                    
                 })
             }
             else{
@@ -85,6 +93,19 @@ export default class Nearby extends Component {
         });
   }
 
+  //get photo when get places
+  getPhoto(ref){
+      return fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='+ref+'&key='+apikey,{
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        }
+      }).then((res)=>{
+          return res.url;
+        //   console.log(res.url);
+      }).catch((err)=>{console.log(err)});
+  }
 
   _renderHeader(){
         return(
@@ -116,10 +137,11 @@ export default class Nearby extends Component {
                 <View
                     style={{
                         flex:1,
-                        backgroundColor:'white'}}>
+                        backgroundColor:'white',}}>
                     
                     <ListView
                             enableEmptySections={true}
+                            paddingTop={5}
                             dataSource={this.state.dataSource}
                             renderRow={(data) => <Row {...data} navigation={this.props.navigation} />}  
                         />
@@ -134,18 +156,59 @@ export default class Nearby extends Component {
 class Row extends Component{
     constructor(){
     super();
+    this.state = {
+        deviceWidth : Dimensions.get('screen').width
+    }
+    Dimensions.addEventListener('change', () => {
+        this.setState({
+            deviceWidth : Dimensions.get('screen').width
+        })
+    });
   }
 
-
+  _renderCachedImage(){
+      if(this.props.photo){
+        return(
+            <CachedImage
+                source={{
+                    uri: this.props.photo
+                }}
+                borderRadius={5}
+                style={{flex:1, height:120,borderRadius:5}}>
+                <View style={styles.rowListTint}>
+                    <Text style={{fontWeight:'bold', color:'#fff', textShadowColor:'#333', textShadowOffset:{width:1,height:1}}}>{this.props.name}</Text>   
+                    <Text style={{color:'#fff'}}>{this.props.vicinity}</Text> 
+                </View>
+            </CachedImage>
+          )
+      }else{
+        return(
+            <CachedImage
+                source={require('./assets/bg_resto.png')}
+                borderRadius={5}
+                style={{flex:1,height:120, width: this.state.deviceWidth, marginRight:5, borderRadius:5}}>
+                <View style={styles.rowListTint}>
+                    <Text style={{fontWeight:'bold', color:'#fff', textShadowColor:'#333', textShadowOffset:{width:1,height:1}}}>{this.props.name}</Text>   
+                    <Text style={{color:'#fff'}}>{this.props.vicinity}</Text> 
+                </View>
+            </CachedImage>
+          )
+      }
+  }
   
   render(){
     return(
-          <TouchableOpacity>
-              <View style={{flex:1,padding:10, flexDirection:'column'}}>
-                  <Text style={{fontWeight:'bold'}}>{this.props.name}</Text>   
-                  <Text>{this.props.vicinity}</Text>   
-              </View>      
-          </TouchableOpacity>
+        <View >
+            <TouchableNativeFeedback
+                onPress={()=>{}}
+                background={TouchableNativeFeedback.Ripple('#ffffffff',true)}
+                useForeground={true}>
+                <View style={{flex:1, flexDirection:'column', borderRadius:5, marginBottom:5, marginHorizontal:5, elevation:2}}>
+                    { this._renderCachedImage() }
+                    {/* <Text>Tes</Text> */}
+                </View>      
+            </TouchableNativeFeedback>
+        </View>
     ) 
   }
 }
@@ -154,5 +217,8 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:'white',
-    }
+    },
+    rowListTint:{
+        flex:1, borderRadius:5, backgroundColor:'rgba(0,0,0,0.4)',padding:10, justifyContent:'flex-end'
+    },
 })
