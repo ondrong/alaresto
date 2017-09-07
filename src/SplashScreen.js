@@ -15,7 +15,7 @@ export default class Splashscreen extends Component {
         super(props);
         this.state = {
             appReady:false,
-            isLoggedIn:false,
+            isLoggedIn:true,
         }
 
         //timeout for splashscreen
@@ -32,16 +32,16 @@ export default class Splashscreen extends Component {
 
     //check current logged user AsyncStorage
     componentWillMount(){
-        AsyncStorage.multiGet(['username','usertype']).then((data)=>{
-            if(data[0][1]){
-                console.log('sudah ada data :', data);
-                this.setState({
-                    isLoggedIn: true,
-                });
-            }else{
-                console.log('harus login..');
-            }
-        })
+        // AsyncStorage.multiGet(['username','usertype']).then((data)=>{
+        //     if(data[0][1]){
+        //         console.log('sudah ada data :', data);
+        //         this.setState({
+        //             isLoggedIn: true,
+        //         });
+        //     }else{
+        //         console.log('harus login..');
+        //     }
+        // })
     }
 
     componentDidUpdate(){
@@ -64,24 +64,24 @@ export default class Splashscreen extends Component {
         }
     }
     
-  render() {
-    return (
-        <View style={styles.container}>
-            <StatusBar
-                backgroundColor="#4caf50"
-                barStyle="light-content"/>
-            
-            <Image
-                style={{
-                    height:150,
-                    resizeMode:'contain',
-                    alignSelf:'center'
-                }}
-                source={require('./assets/alaresto-splash.png')}
-            />
-        </View>
-    )
-  }
+    render() {
+        return (
+            <View style={styles.container}>
+                <StatusBar
+                    backgroundColor="#4caf50"
+                    barStyle="light-content"/>
+                
+                <Image
+                    style={{
+                        height:150,
+                        resizeMode:'contain',
+                        alignSelf:'center'
+                    }}
+                    source={require('./assets/alaresto-splash.png')}
+                />
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({

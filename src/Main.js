@@ -23,22 +23,22 @@ export default class Main extends Component {
         super(props);
         this.state = {
             // isLoading:true,
-            currentCity:'Bekasi',
+            currentCity:'',
         }
 
-        //get current position
-        // navigator.geolocation.getCurrentPosition(
-        //     (position) => {
-        //         // console.log(position);
-        //         this.setState({
-        //             latitude: position.coords.latitude,
-        //             longitude: position.coords.longitude,
-        //         });
-        //         this.getCurrentCity();                
-        //     },
-        //     (error) => this.setState({ error: error.message }),
-        //     { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
-        // );    
+        // get current position
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // console.log(position);
+                this.setState({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+                this.getCurrentCity();                
+            },
+            (error) => this.setState({ error: error.message }),
+            { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
+        );    
     }
 
 
@@ -124,14 +124,16 @@ export default class Main extends Component {
     }
 
     _renderLoc(){
-        return(
-            <View style={{flexDirection:'row',height:33}}>
-                <View style={{padding:5,marginLeft:5}}>
-                    <Image style={{flex:1,width:33, resizeMode:'contain'}} source={require('./assets/ic_loc.png')}/>
+        if(this.state.currentCity){           
+            return(
+                <View style={{flexDirection:'row',height:33}}>
+                    <View style={{padding:5,marginLeft:5}}>
+                        <Image style={{flex:1,width:33, resizeMode:'contain'}} source={require('./assets/ic_loc.png')}/>
+                    </View>
+                    <Text style={{marginVertical:5,color:'#777'}}>{this.state.currentCity}</Text>                        
                 </View>
-                <Text style={{marginVertical:5,color:'#777'}}>{this.state.currentCity}</Text>                        
-            </View>
-        )
+            )
+        }
     }
 
     render() {
@@ -149,7 +151,7 @@ export default class Main extends Component {
                     <View style={{flex:1,backgroundColor:'#efefef'}}>
                         {this._renderLoc()}
 
-                        <View style={{flexDirection:'row',paddingHorizontal:5}}>
+                        <View style={{flexDirection:'row',padding:5}}>
                             
                             <View style={styles.card}>
                                 <TouchableNativeFeedback
@@ -168,11 +170,11 @@ export default class Main extends Component {
                             </View>
                             <View style={styles.card}>
                                 <Image style={styles.cardImage} source={require('./assets/main_fav.png')}/>                                
-                                <Text style={styles.cardText}>Terlaris</Text> 
+                                <Text style={styles.cardText}>Favorit</Text> 
                             </View>
                             <View style={styles.card}>
-                                <Image style={styles.cardImage} source={require('./assets/main_star.png')}/>                                
-                                <Text style={styles.cardText}>Promo</Text> 
+                                <Image style={styles.cardImage} source={require('./assets/main_open.png')}/>                                
+                                <Text style={styles.cardText}>Buka</Text> 
                             </View>                            
                         </View>
                             {/* <Button
