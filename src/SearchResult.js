@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   AppRegistry,
   AsyncStorage,
@@ -23,13 +24,13 @@ import Button from './lib/Button';
 
 const {height, width} = Dimensions.get('screen');
 import { apikey } from './Config';
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-export default class Nearby extends Component {
+export default class SearchResult extends Component {
 
     constructor(props){
         super(props);
         this.state = {
+            isLoadData:true,
             data: [],
             nextPageToken:''
         }
@@ -44,7 +45,7 @@ export default class Nearby extends Component {
                     // posReady: true,
                     error: null,
                 });
-                this.getPlaces();                
+                this.getPlaces(this.props.navigation.state.params.params);                
             },
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
@@ -56,10 +57,10 @@ export default class Nearby extends Component {
         header:null,
     };
 
-    getPlaces(){
-        return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+
-                        this.state.latitude+','+this.state.longitude+'&radius=800&type=restaurant&language=id&key='+
-                        apikey,{
+    getPlaces(params){
+        return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+
+                        '&radius=1000&'+params.opennow+
+                        '&type=restaurant&language=id&key='+apikey,{
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -74,8 +75,8 @@ export default class Nearby extends Component {
                         //isi list view dulu                        
                         this.setState({
                             data: data.results,
-                            nextPageToken: data.next_page_token
-                            // dataSource: ds.cloneWithRows(data.results),
+                            nextPageToken: data.next_page_token,
+                            isLoadData:false,
                         });
 
                         //ambil foto
@@ -205,7 +206,16 @@ export default class Nearby extends Component {
         )
     }
 
+    _renderLoadData(){
+        if(this.state.isLoadData){
+            return(
+                <ActivityIndicator/>
+            )
+        }
+    }
+
     render(){
+
             return (
                 <View style={styles.container}>
                     <StatusBar
@@ -230,7 +240,10 @@ export default class Nearby extends Component {
                                 )}
                                 onEndReached={()=>{this.loadMorePlaces(this.state.nextPageToken)}}
                                 onEndReachedThreshold={5}
+                                refreshing={this.state.isLoadData}
+                                onRefresh={()=>console.log('refreshing..')}
                                 />
+                            {/* {this._renderLoadData()} */}
                     </View>
                 </View>
             )

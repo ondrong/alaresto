@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { LoginManager } from 'react-native-fbsdk';
 import { NavigationActions } from 'react-navigation';
+import CachedImage from 'react-native-cached-image';
 
 import Button from './lib/Button';
 
@@ -156,7 +157,7 @@ export default class Main extends Component {
                             
                             <View style={styles.card}>
                                 <TouchableNativeFeedback
-                                        onPress={()=>{this.props.navigation.navigate('Nearby')}}
+                                        onPress={()=>{this.props.navigation.navigate('SearchResult',{params:{}})}}
                                         background={TouchableNativeFeedback.Ripple('#4caf5055', true)}>
                                     <View style={{alignItems:'center'}}>
                                             <Image style={styles.cardImage} source={require('./assets/main_nearby.png')}/>                                
@@ -165,23 +166,55 @@ export default class Main extends Component {
                                 </TouchableNativeFeedback>
                             </View>
 
-                            <View style={styles.card}>
+                            {/* <View style={styles.card}>
                                 <Image style={styles.cardImage} source={require('./assets/main_save.png')}/>                                
                                 <Text style={styles.cardText}>Hemat</Text> 
                             </View>
                             <View style={styles.card}>
                                 <Image style={styles.cardImage} source={require('./assets/main_fav.png')}/>                                
                                 <Text style={styles.cardText}>Favorit</Text> 
-                            </View>
+                            </View> */}
+
                             <View style={styles.card}>
-                                <Image style={styles.cardImage} source={require('./assets/main_open.png')}/>                                
-                                <Text style={styles.cardText}>Buka</Text> 
+                                <TouchableNativeFeedback
+                                        onPress={()=>{
+                                            this.props.navigation.navigate('SearchResult',{
+                                                    params:{
+                                                        opennow:'opennow',
+                                                    }
+                                                })
+                                        }}
+                                        background={TouchableNativeFeedback.Ripple('#4caf5055', true)}>
+                                    <View style={{alignItems:'center'}}>
+                                            <Image style={styles.cardImage} source={require('./assets/main_open.png')}/>                                
+                                            <Text style={styles.cardText}>Buka</Text>
+                                    </View>
+                                </TouchableNativeFeedback>
                             </View>                            
                         </View>
-                            {/* <Button
-                            onPress={()=>{this.logout()}}
-                            backgroundColor="#333"
-                            label="KELUAR"/>   */}
+                        
+                        <View syle={{flex:1}}>
+                            <View>
+                                <TouchableNativeFeedback
+                                    onPress={()=>{this.props.navigation.navigate('')}}
+                                    background={TouchableNativeFeedback.Ripple('#ffffffff',true)}
+                                    useForeground={true}>
+                                    <View style={{flex:1, flexDirection:'column', borderRadius:5, marginBottom:5, marginHorizontal:5, elevation:2}}>
+                                        <CachedImage
+                                            source={{
+                                                uri: 'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'
+                                            }}
+                                            borderRadius={5}
+                                            style={{flex:1, height:120,borderRadius:5}}>
+                                            <View style={styles.rowListTint}>
+                                                <Text style={{fontWeight:'bold', color:'#fff', textShadowColor:'#333', textShadowOffset:{width:1,height:1}}}>Seafood</Text>   
+                                            </View>
+                                        </CachedImage>
+                                    </View>      
+                                </TouchableNativeFeedback>
+                            </View>
+                        </View>
+
                     </View>
                 </View>
             )
@@ -216,5 +249,8 @@ const styles = StyleSheet.create({
     cardText: {
         color:'#555',
         marginVertical:3,
-    }
+    },
+    rowListTint:{
+        flex:1, borderRadius:5, backgroundColor:'rgba(0,0,0,0.4)',padding:10, justifyContent:'flex-end'
+    },
 })
