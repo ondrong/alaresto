@@ -109,7 +109,7 @@ export default class Main extends Component {
 
     _renderHeader(){
         return(
-        <View style={{height:55,flexDirection:'row', backgroundColor:'#4caf50', elevation:2}}>
+        <View style={{height:55,flexDirection:'row', backgroundColor:'#4caf50', elevation:2,marginTop:20}}>
             <TouchableOpacity
                 onPress={()=>{}}>
                 <Image style={{flex:1, height:25, width:25, margin:15, resizeMode:'contain'}} source={require('./assets/ic_menu.png')}/>
@@ -145,6 +145,7 @@ export default class Main extends Component {
             return (
                 <View style={styles.container}>
                     <StatusBar
+                        translucent={true}
                         backgroundColor="#4caf50"
                         barStyle="light-content"/>
                     {this._renderHeader()}

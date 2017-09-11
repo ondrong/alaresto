@@ -4,6 +4,7 @@ import {
   AppRegistry,
   AsyncStorage,
   Dimensions,
+  FlatList,
   Image,
   StyleSheet,
   StatusBar,
@@ -16,6 +17,7 @@ import {
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import CachedImage from 'react-native-cached-image';
+import * as axios from 'axios';
 
 import Button from './lib/Button';
 
@@ -28,7 +30,8 @@ export default class Nearby extends Component {
     constructor(props){
         super(props);
         this.state = {
-            dataSource: ds.cloneWithRows([]),
+            data: [],
+            // dataSource: ds.cloneWithRows([]),
         }
 
         //get current position
@@ -53,11 +56,8 @@ export default class Nearby extends Component {
         header:null,
     };
 
-    componentDidMount(){
-    }
-
     getPlaces(){
-        return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&radius=500&type=restaurant&key='+apikey,{
+        return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&radius=800&type=restaurant&key='+apikey,{
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -68,24 +68,29 @@ export default class Nearby extends Component {
                 // console.log(response);
                 if(response.ok){
                     response.json().then((data)=>{
-                        console.log(data);
+
+                        //isi list view dulu                        
+                        this.setState({
+                            data: data.results,
+                            // dataSource: ds.cloneWithRows(data.results),
+                        });
+
+                        //ambil foto
                         var datas = data.results.map(async (item)=>{
                             if(item.photos){
-                                var photo = await this.getPhoto(item.photos[0].photo_reference);
-                                // console.log(item.photos[0].photo_reference);
+                               item.photo = await this.getPhoto(item.photos[0].photo_reference);
                             }
-                            return item;                     
+                            return item;
+                        })
+                        console.log(data.results);
+
+                        //perbaharui listview dengan fotonya
+                        Promise.all(datas).then((x)=>{
+                            this.setState({
+                                data : x,
+                                // dataSource: ds.cloneWithRows(x)
+                            });                            
                         });
-                        
-                        this.setState({dataSource: ds.cloneWithRows(data.results)});
-                        console.log(data.results);                    
-
-                        //resolve promise
-                        // Promise.all(datas).then((x)=>{
-                        //     console.log(x)
-                        //     this.setState({dataSource: ds.cloneWithRows(x)});                            
-                        // })
-
                     })
                 }
                 else{
@@ -105,22 +110,30 @@ export default class Nearby extends Component {
     }
 
     //get photo when get places
-   getPhoto(ref){
-        return fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='+ref+'&key='+apikey,{
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            }
-        }).then(async (res)=>{
-            return await Promise.resolve(res.url);
-            //   console.log(res.url);
-        }).catch((err)=>{console.log(err)});
+    getPhoto(ref){
+            // console.log(ref);
+            return axios.get('https://maps.googleapis.com/maps/api/place/photo',{
+                params:{
+                    key:apikey,
+                    photoreference:ref,
+                    maxwidth:400,
+                }
+            })
+            .then((res)=>{
+                // return await Promise.resolve(res.url);
+                // res.json().then((data)=>{
+                    // console.log(res)
+                // })
+                // console.log(res.request.responseURL);
+                return res.request.responseURL;
+                //   return Promise.resolve(res.url);
+            })
+            .catch((err)=>{console.log(err)});
     }
 
     _renderHeader(){
         return(
-            <View style={{height:55,flexDirection:'row', backgroundColor:'#4caf50'}}>
+            <View style={{height:55,flexDirection:'row', backgroundColor:'#4caf50', marginTop:20}}>
                 <TouchableOpacity
                     onPress={()=>{this.props.navigation.goBack()}}>
                     <Image style={{flex:1, height:25, width:25, margin:15, resizeMode:'contain'}} source={require('./assets/ic_left_arrow.png')}/>
@@ -134,26 +147,30 @@ export default class Nearby extends Component {
         )
     }
 
-    render() {
+    render(){
             return (
                 <View style={styles.container}>
                     <StatusBar
+                        translucent={true}
                         backgroundColor="#4caf50"
                         barStyle="light-content"/>
+
                     {this._renderHeader()}
 
                     <View
                         style={{
                             flex:1,
-                            backgroundColor:'white',}}>
-                        
-                        <ListView
-                            enableEmptySections={true}
-                            paddingTop={5}
-                            dataSource={this.state.dataSource}
-                            renderRow={(data) => <Row {...data} navigation={this.props.navigation} />}  
-                            onEndReached={() => console.log('mencapai batas bawah listview')}
-                            />
+                            backgroundColor:'white',
+                            }}>
+
+                            <FlatList
+                                style={{flex:1,paddingVertical:5}}
+                                data={this.state.data}
+                                keyExtractor={(item) => item.id}
+                                renderItem={({item})=>(
+                                    <Row {...item} navigation={this.props.navigation}/>
+                                )}
+                                />
                     </View>
                 </View>
             )
@@ -207,8 +224,8 @@ class Row extends Component{
                 borderRadius={5}
                 style={{flex:1, height:120,borderRadius:5}}>
                 <View style={styles.rowListTint}>
-                    <Text style={{fontWeight:'bold', color:'#fff', textShadowColor:'#333', textShadowOffset:{width:1,height:1}}}>{this.props.name.toString()}</Text>   
-                    <Text style={{color:'#fff'}}>{this.props.vicinity.toString()}</Text> 
+                    <Text style={{fontWeight:'bold', color:'#fff', textShadowColor:'#333', textShadowOffset:{width:1,height:1}}}>{this.props.name}</Text>   
+                    <Text style={{color:'#fff'}}>{this.props.vicinity}</Text> 
                     {open_now}
                 </View>
             </CachedImage>
@@ -220,7 +237,7 @@ class Row extends Component{
         return(
             <View >
                 <TouchableNativeFeedback
-                    onPress={()=>{}}
+                    onPress={()=>{this.props.navigation.navigate('RestoDetail',{placeid:this.props.place_id, allprops:this.props})}}
                     background={TouchableNativeFeedback.Ripple('#ffffffff',true)}
                     useForeground={true}>
                     <View style={{flex:1, flexDirection:'column', borderRadius:5, marginBottom:5, marginHorizontal:5, elevation:2}}>

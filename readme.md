@@ -29,3 +29,4 @@ $ react-native run-android
 Proyek ini menggunakan beberapa library dan depedency:
 - React Navigation
 - Facebook SDK
+- [Header Scroll View](https://github.com/bamlab/react-native-image-header-scroll-view)
