@@ -19,6 +19,7 @@ import { NavigationActions } from 'react-navigation';
 import CachedImage from 'react-native-cached-image';
 
 import Button from './lib/Button';
+import { randomfood } from './lib/RandomFood';
 
 
 export default class Search extends Component {
@@ -46,7 +47,7 @@ export default class Search extends Component {
                         autoFocus={true}
                         autoCapitalize="none"
                         autoCorrect={false}
-                        placeholder="Cari"
+                        placeholder={"Cari, misal: "+randomfood}
                         onTouchCancel={()=>this.props.navigation.goBack()}
                         style={{flex:1,backgroundColor:'#fff',marginVertical:10,borderRadius:3,elevation:1,textAlignVertical:'center',textDecorationLine:'none',color:'#555'}}
                         onChangeText={(text)=>this.setState({search:text})}
