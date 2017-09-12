@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   StatusBar,
+  ScrollView,
   Text,
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -110,17 +111,17 @@ export default class Main extends Component {
 
     _renderHeader(){
         return(
-        <View style={{height:55,flexDirection:'row', backgroundColor:'#4caf50', elevation:2,marginTop:20}}>
-            <TouchableOpacity
-                onPress={()=>{}}>
-                <Image style={{flex:1, height:25, width:25, margin:15, resizeMode:'contain'}} source={require('./assets/ic_menu.png')}/>
-            </TouchableOpacity>
-            <Image style={{flex:1, height:25, marginVertical:15, resizeMode:'contain'}} source={require('./assets/logo-white.png')}/>
-            <TouchableOpacity
-                onPress={()=>{}}>
-                <Image style={{flex:1, height:25, width:25, margin:15, resizeMode:'contain'}} source={require('./assets/ic_search.png')}/>
-            </TouchableOpacity>
-        </View>
+            <View style={{height:55,flexDirection:'row', backgroundColor:'#4caf50', marginTop:20}}>
+                <TouchableOpacity
+                    onPress={()=>{this.props.navigation.navigate('Settings')}}>
+                    <Image style={{flex:1, height:25, width:25, margin:15, resizeMode:'contain'}} source={require('./assets/ic_menu.png')}/>
+                </TouchableOpacity>
+                <Image style={{flex:1, height:25, marginVertical:15, resizeMode:'contain'}} source={require('./assets/logo-white.png')}/>
+                <TouchableOpacity
+                    onPress={()=>{this.props.navigation.navigate('Search')}}>
+                    <Image style={{flex:1, height:25, width:25, margin:17, resizeMode:'contain'}} source={require('./assets/ic_search.png')}/>
+                </TouchableOpacity>
+            </View>
         )
     }
 
@@ -150,146 +151,185 @@ export default class Main extends Component {
                         backgroundColor="#4caf50"
                         barStyle="light-content"/>
                     {this._renderHeader()}
-                    <View style={{flex:1,backgroundColor:'#f5f5f5',padding:5}}>
-                        {this._renderLoc()}
+                    <ScrollView>
+                        <CachedImage style={{height:180}} source={{uri:'https://preview.ibb.co/esRHmv/Banner_Ala_Resto.jpg'}}/>                    
+                        <View style={{flex:1,backgroundColor:'#f5f5f5',padding:5}}>
+                            {this._renderLoc()}
 
-                        <View style={{flexDirection:'row',height:100}}>
+                            <View style={{flexDirection:'row',height:100}}>
+                                
+                                <View style={styles.card}>
+                                    <TouchableNativeFeedback
+                                            onPress={()=>{this.props.navigation.navigate('SearchResult',{params:{}})}}
+                                            background={TouchableNativeFeedback.Ripple('#4caf5055', true)}>
+                                        <View style={{alignItems:'center'}}>
+                                                <Image style={styles.cardImage} source={require('./assets/main_nearby.png')}/>                                
+                                                <Text style={styles.cardText}>Disekitar</Text>
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </View>
+
+                                {/* <View style={styles.card}>
+                                    <Image style={styles.cardImage} source={require('./assets/main_save.png')}/>                                
+                                    <Text style={styles.cardText}>Hemat</Text> 
+                                </View>
+                                <View style={styles.card}>
+                                    <Image style={styles.cardImage} source={require('./assets/main_fav.png')}/>                                
+                                    <Text style={styles.cardText}>Favorit</Text> 
+                                </View> */}
+
+                                <View style={styles.card}>
+                                    <TouchableNativeFeedback
+                                            onPress={()=>{
+                                                this.props.navigation.navigate('SearchResult',{
+                                                        params:{
+                                                            opennow:'opennow',
+                                                        }
+                                                    })
+                                            }}
+                                            background={TouchableNativeFeedback.Ripple('#4caf5055', true)}>
+                                        <View style={{alignItems:'center'}}>
+                                                <Image style={styles.cardImage} source={require('./assets/main_open.png')}/>                                
+                                                <Text style={styles.cardText}>Sedang Buka</Text>
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </View>                            
+                            </View>
                             
-                            <View style={styles.card}>
-                                <TouchableNativeFeedback
-                                        onPress={()=>{this.props.navigation.navigate('SearchResult',{params:{}})}}
-                                        background={TouchableNativeFeedback.Ripple('#4caf5055', true)}>
-                                    <View style={{alignItems:'center'}}>
-                                            <Image style={styles.cardImage} source={require('./assets/main_nearby.png')}/>                                
-                                            <Text style={styles.cardText}>Terdekat</Text>
-                                    </View>
-                                </TouchableNativeFeedback>
+                            <Text style={styles.textSectionTitle}>Kategori</Text>
+                            
+                            <View style={styles.kategoriRow}>
+                                <View style={styles.card2}>
+                                    <TouchableNativeFeedback
+                                    onPress={()=>{
+                                                this.props.navigation.navigate('SearchResult',{
+                                                        params:{
+                                                            keyword:'lesehan'
+                                                        }
+                                                    })
+                                            }}
+                                            background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                            useForeground={true}>
+                                        <View style={{flex:1}}>
+                                                <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://image.ibb.co/hqh9Ya/foody_mobile_bh_1200x800_jpg_693_636041028475399863.jpg'}}>
+                                                    <View style={styles.rowListTint}>
+                                                        <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Lesehan & Pecel Lele</Text>   
+                                                    </View>
+                                                </CachedImage>                                
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </View>
+                                <View style={styles.card2}>
+                                    <TouchableNativeFeedback
+                                            onPress={()=>{
+                                                this.props.navigation.navigate('SearchResult',{
+                                                        params:{
+                                                            keyword:'bakso+mie+ayam',
+                                                        }
+                                                    })
+                                            }}
+                                            background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                            useForeground={true}>
+                                        <View style={{flex:1}}>
+                                                <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://preview.ibb.co/bPPdRv/bakso.jpg'}}>
+                                                    <View style={styles.rowListTint}>
+                                                        <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Bakso & Mie Ayam</Text>   
+                                                    </View>
+                                                </CachedImage>                                
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </View>       
                             </View>
 
-                            {/* <View style={styles.card}>
-                                <Image style={styles.cardImage} source={require('./assets/main_save.png')}/>                                
-                                <Text style={styles.cardText}>Hemat</Text> 
+                            <View style={styles.kategoriRow}>
+                                <View style={styles.card2}>
+                                    <TouchableNativeFeedback
+                                            onPress={()=>{
+                                                this.props.navigation.navigate('SearchResult',{
+                                                        params:{
+                                                            keyword:'angkringan',
+                                                        }
+                                                    })
+                                            }}
+                                            background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                            useForeground={true}>
+                                        <View style={{flex:1}}>
+                                                <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://preview.ibb.co/bACF6v/angkringan_lek_man.jpg'}}>
+                                                    <View style={styles.rowListTint}>
+                                                        <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Angkringan</Text>   
+                                                    </View>
+                                                </CachedImage>                                
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </View>
+                                <View style={styles.card2}>
+                                    <TouchableNativeFeedback
+                                            onPress={()=>{
+                                                this.props.navigation.navigate('SearchResult',{
+                                                        params:{
+                                                            keyword:'nasi',
+                                                        }
+                                                    })
+                                            }}
+                                            background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                            useForeground={true}>
+                                        <View style={{flex:1}}>
+                                                <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://preview.ibb.co/mAq2mv/nasi_lemak.jpg'}}>
+                                                    <View style={styles.rowListTint}>
+                                                        <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Aneka Nasi</Text>   
+                                                    </View>
+                                                </CachedImage>                                
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </View>       
                             </View>
-                            <View style={styles.card}>
-                                <Image style={styles.cardImage} source={require('./assets/main_fav.png')}/>                                
-                                <Text style={styles.cardText}>Favorit</Text> 
-                            </View> */}
 
-                            <View style={styles.card}>
-                                <TouchableNativeFeedback
-                                        onPress={()=>{
-                                            this.props.navigation.navigate('SearchResult',{
-                                                    params:{
-                                                        opennow:'opennow',
-                                                    }
-                                                })
-                                        }}
-                                        background={TouchableNativeFeedback.Ripple('#4caf5055', true)}>
-                                    <View style={{alignItems:'center'}}>
-                                            <Image style={styles.cardImage} source={require('./assets/main_open.png')}/>                                
-                                            <Text style={styles.cardText}>Buka</Text>
-                                    </View>
-                                </TouchableNativeFeedback>
-                            </View>                            
-                        </View>
+                            <View style={styles.kategoriRow}>
+                                <View style={styles.card2}>
+                                    <TouchableNativeFeedback
+                                            onPress={()=>{
+                                                this.props.navigation.navigate('SearchResult',{
+                                                        params:{
+                                                            keyword:'Pizza',
+                                                        }
+                                                    })
+                                            }}
+                                            background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                            useForeground={true}>
+                                        <View style={{flex:1}}>
+                                                <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://preview.ibb.co/icUHKF/pep_pizza.jpg'}}>
+                                                    <View style={styles.rowListTint}>
+                                                        <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Pizza & Steak</Text>   
+                                                    </View>
+                                                </CachedImage>                                
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </View>
+                                <View style={styles.card2}>
+                                    <TouchableNativeFeedback
+                                            onPress={()=>{
+                                                this.props.navigation.navigate('SearchResult',{
+                                                        params:{
+                                                            keyword:'cafe',
+                                                        }
+                                                    })
+                                            }}
+                                            background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                            useForeground={true}>
+                                        <View style={{flex:1}}>
+                                                <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://preview.ibb.co/kBkeYa/main_course_brick_cafe_jogja.jpg'}}>
+                                                    <View style={styles.rowListTint}>
+                                                        <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Kafe</Text>   
+                                                    </View>
+                                                </CachedImage>                                
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </View>       
+                            </View>
                         
-                        <Text style={styles.textSectionTitle}>Kategori</Text>
-                        
-                        <View style={{flexDirection:'row',height:60}}>
-                            <View style={styles.card2}>
-                                <TouchableNativeFeedback
-                                        onPress={()=>{}}
-                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
-                                        useForeground={true}>
-                                    <View style={{flex:1}}>
-                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
-                                                <View style={styles.rowListTint}>
-                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Lesehan & Pecel Lele</Text>   
-                                                </View>
-                                            </CachedImage>                                
-                                    </View>
-                                </TouchableNativeFeedback>
-                            </View>
-                            <View style={styles.card2}>
-                                <TouchableNativeFeedback
-                                        onPress={()=>{}}
-                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
-                                        useForeground={true}>
-                                    <View style={{flex:1}}>
-                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
-                                                <View style={styles.rowListTint}>
-                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Bakso & Mie Ayam</Text>   
-                                                </View>
-                                            </CachedImage>                                
-                                    </View>
-                                </TouchableNativeFeedback>
-                            </View>       
-                        </View>
 
-                        <View style={{flexDirection:'row',height:60}}>
-                            <View style={styles.card2}>
-                                <TouchableNativeFeedback
-                                        onPress={()=>{}}
-                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
-                                        useForeground={true}>
-                                    <View style={{flex:1}}>
-                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
-                                                <View style={styles.rowListTint}>
-                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Angkringan</Text>   
-                                                </View>
-                                            </CachedImage>                                
-                                    </View>
-                                </TouchableNativeFeedback>
-                            </View>
-                            <View style={styles.card2}>
-                                <TouchableNativeFeedback
-                                        onPress={()=>{}}
-                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
-                                        useForeground={true}>
-                                    <View style={{flex:1}}>
-                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
-                                                <View style={styles.rowListTint}>
-                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Nasi</Text>   
-                                                </View>
-                                            </CachedImage>                                
-                                    </View>
-                                </TouchableNativeFeedback>
-                            </View>       
                         </View>
-
-                        <View style={{flexDirection:'row',height:60}}>
-                            <View style={styles.card2}>
-                                <TouchableNativeFeedback
-                                        onPress={()=>{}}
-                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
-                                        useForeground={true}>
-                                    <View style={{flex:1}}>
-                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
-                                                <View style={styles.rowListTint}>
-                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Pizza & Pasta</Text>   
-                                                </View>
-                                            </CachedImage>                                
-                                    </View>
-                                </TouchableNativeFeedback>
-                            </View>
-                            <View style={styles.card2}>
-                                <TouchableNativeFeedback
-                                        onPress={()=>{}}
-                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
-                                        useForeground={true}>
-                                    <View style={{flex:1}}>
-                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
-                                                <View style={styles.rowListTint}>
-                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Kafe</Text>   
-                                                </View>
-                                            </CachedImage>                                
-                                    </View>
-                                </TouchableNativeFeedback>
-                            </View>       
-                        </View>
-                       
-
-                    </View>
+                    </ScrollView>
                 </View>
             )
         }
@@ -342,4 +382,5 @@ const styles = StyleSheet.create({
         fontSize:16,
         color:'black'
     },
+    kategoriRow:{flexDirection:'row',height:80},
 })

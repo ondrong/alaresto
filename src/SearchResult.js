@@ -58,35 +58,35 @@ export default class SearchResult extends Component {
     };
 
     getPlaces(params){
-        return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+
-                        '&radius=1000&'+params.opennow+
-                        '&type=restaurant&language=id&key='+apikey,{
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+        return axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json',{
+                params:{
+                    key:apikey,                    
+                    location:this.state.latitude+','+this.state.longitude,
+                    radius:1500,
+                    type:'restaurant',
+                    language:'id',
+                    keyword:params.keyword,
+                    opennow:params.opennow,
                 }
             })
-            .then((response) => {
-                // console.log(response);
-                if(response.ok){
-                    response.json().then((data)=>{
-
+            .then((res) => {
+                console.log(res);
+                if(res.data.results){
+                        // console.log(response.data);
                         //isi list view dulu                        
                         this.setState({
-                            data: data.results,
-                            nextPageToken: data.next_page_token,
+                            data: res.data.results,
+                            nextPageToken: res.data.next_page_token,
                             isLoadData:false,
                         });
 
                         //ambil foto
-                        var datas = data.results.map(async (item)=>{
+                        var datas = res.data.results.map(async (item)=>{
                             if(item.photos){
                                item.photo = await this.getPhoto(item.photos[0].photo_reference);
                             }
                             return item;
                         })
-                        console.log(data);
 
                         //perbaharui listview dengan fotonya
                         Promise.all(datas).then((x)=>{
@@ -95,17 +95,16 @@ export default class SearchResult extends Component {
                                 // dataSource: ds.cloneWithRows(x)
                             });                            
                         });
-                    })
                 }
                 else{
-                    response.json().then((error)=>{
-                        console.log(error);                    
-                    })
-                    Alert.alert(
-                        'Gagal',
-                        'Silahkan ulangi',
-                        [{text:'OK'},]
-                    )
+                    // response.json().then((error)=>{
+                    //     console.log(error);                    
+                    // })
+                    // Alert.alert(
+                    //     'Gagal',
+                    //     'Silahkan ulangi',
+                    //     [{text:'OK'},]
+                    // )
                 }
             })
             .catch((error) => {
@@ -199,7 +198,7 @@ export default class SearchResult extends Component {
                 </TouchableOpacity>
                 <Image style={{flex:1, height:25, marginVertical:15, resizeMode:'contain'}} source={require('./assets/logo-white.png')}/>
                 <TouchableOpacity
-                    onPress={()=>{}}>
+                    onPress={()=>{this.props.navigation.navigate('Search')}}>
                     <Image style={{flex:1, height:25, width:25, margin:17, resizeMode:'contain'}} source={require('./assets/ic_search.png')}/>
                 </TouchableOpacity>
             </View>
@@ -232,7 +231,7 @@ export default class SearchResult extends Component {
                             }}>
 
                             <FlatList
-                                style={{flex:1,paddingVertical:5}}
+                                style={{flex:1}}
                                 data={this.state.data}
                                 keyExtractor={(item) => item.id}
                                 renderItem={({item})=>(
@@ -308,12 +307,12 @@ class Row extends Component{
   
     render(){
         return(
-            <View >
+            <View>
                 <TouchableNativeFeedback
                     onPress={()=>{this.props.navigation.navigate('RestoDetail',{placeid:this.props.place_id, allprops:this.props})}}
                     background={TouchableNativeFeedback.Ripple('#ffffffff',true)}
                     useForeground={true}>
-                    <View style={{flex:1, flexDirection:'column', borderRadius:5, marginBottom:5, marginHorizontal:5, elevation:2}}>
+                    <View style={{flex:1, flexDirection:'column', borderRadius:5, marginVertical:5, marginHorizontal:5, elevation:2}}>
                         { this._renderCachedImage() }
                     </View>      
                 </TouchableNativeFeedback>
