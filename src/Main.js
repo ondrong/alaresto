@@ -128,7 +128,7 @@ export default class Main extends Component {
         if(this.state.currentCity){           
             return(
                 <View style={{flexDirection:'row',height:33}}>
-                    <View style={{padding:5,marginLeft:5}}>
+                    <View style={{padding:5}}>
                         <Image style={{flex:1,width:33, resizeMode:'contain'}} source={require('./assets/ic_loc.png')}/>
                     </View>
                     <Text style={{marginVertical:5,color:'#777'}}>{this.state.currentCity}</Text>                        
@@ -150,10 +150,10 @@ export default class Main extends Component {
                         backgroundColor="#4caf50"
                         barStyle="light-content"/>
                     {this._renderHeader()}
-                    <View style={{flex:1,backgroundColor:'#efefef'}}>
+                    <View style={{flex:1,backgroundColor:'#f5f5f5',padding:5}}>
                         {this._renderLoc()}
 
-                        <View style={{flexDirection:'row',padding:5}}>
+                        <View style={{flexDirection:'row',height:100}}>
                             
                             <View style={styles.card}>
                                 <TouchableNativeFeedback
@@ -193,27 +193,101 @@ export default class Main extends Component {
                             </View>                            
                         </View>
                         
-                        <View syle={{flex:1}}>
-                            <View>
+                        <Text style={styles.textSectionTitle}>Kategori</Text>
+                        
+                        <View style={{flexDirection:'row',height:60}}>
+                            <View style={styles.card2}>
                                 <TouchableNativeFeedback
-                                    onPress={()=>{this.props.navigation.navigate('')}}
-                                    background={TouchableNativeFeedback.Ripple('#ffffffff',true)}
-                                    useForeground={true}>
-                                    <View style={{flex:1, flexDirection:'column', borderRadius:5, marginBottom:5, marginHorizontal:5, elevation:2}}>
-                                        <CachedImage
-                                            source={{
-                                                uri: 'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'
-                                            }}
-                                            borderRadius={5}
-                                            style={{flex:1, height:120,borderRadius:5}}>
-                                            <View style={styles.rowListTint}>
-                                                <Text style={{fontWeight:'bold', color:'#fff', textShadowColor:'#333', textShadowOffset:{width:1,height:1}}}>Seafood</Text>   
-                                            </View>
-                                        </CachedImage>
-                                    </View>      
+                                        onPress={()=>{}}
+                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                        useForeground={true}>
+                                    <View style={{flex:1}}>
+                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
+                                                <View style={styles.rowListTint}>
+                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Lesehan & Pecel Lele</Text>   
+                                                </View>
+                                            </CachedImage>                                
+                                    </View>
                                 </TouchableNativeFeedback>
                             </View>
+                            <View style={styles.card2}>
+                                <TouchableNativeFeedback
+                                        onPress={()=>{}}
+                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                        useForeground={true}>
+                                    <View style={{flex:1}}>
+                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
+                                                <View style={styles.rowListTint}>
+                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Bakso & Mie Ayam</Text>   
+                                                </View>
+                                            </CachedImage>                                
+                                    </View>
+                                </TouchableNativeFeedback>
+                            </View>       
                         </View>
+
+                        <View style={{flexDirection:'row',height:60}}>
+                            <View style={styles.card2}>
+                                <TouchableNativeFeedback
+                                        onPress={()=>{}}
+                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                        useForeground={true}>
+                                    <View style={{flex:1}}>
+                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
+                                                <View style={styles.rowListTint}>
+                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Angkringan</Text>   
+                                                </View>
+                                            </CachedImage>                                
+                                    </View>
+                                </TouchableNativeFeedback>
+                            </View>
+                            <View style={styles.card2}>
+                                <TouchableNativeFeedback
+                                        onPress={()=>{}}
+                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                        useForeground={true}>
+                                    <View style={{flex:1}}>
+                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
+                                                <View style={styles.rowListTint}>
+                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Nasi</Text>   
+                                                </View>
+                                            </CachedImage>                                
+                                    </View>
+                                </TouchableNativeFeedback>
+                            </View>       
+                        </View>
+
+                        <View style={{flexDirection:'row',height:60}}>
+                            <View style={styles.card2}>
+                                <TouchableNativeFeedback
+                                        onPress={()=>{}}
+                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                        useForeground={true}>
+                                    <View style={{flex:1}}>
+                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
+                                                <View style={styles.rowListTint}>
+                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Pizza & Pasta</Text>   
+                                                </View>
+                                            </CachedImage>                                
+                                    </View>
+                                </TouchableNativeFeedback>
+                            </View>
+                            <View style={styles.card2}>
+                                <TouchableNativeFeedback
+                                        onPress={()=>{}}
+                                        background={TouchableNativeFeedback.Ripple('#ffffffaa', true)}
+                                        useForeground={true}>
+                                    <View style={{flex:1}}>
+                                            <CachedImage style={{borderRadius:5,flex:1}} source={{uri:'https://thetastearchives.files.wordpress.com/2017/03/irish-seafood.jpg?w=620'}}>
+                                                <View style={styles.rowListTint}>
+                                                    <Text style={{flex:1,fontWeight:'bold', color:'#fff',textAlignVertical:'center',textAlign:'center'}}>Kafe</Text>   
+                                                </View>
+                                            </CachedImage>                                
+                                    </View>
+                                </TouchableNativeFeedback>
+                            </View>       
+                        </View>
+                       
 
                     </View>
                 </View>
@@ -231,15 +305,24 @@ const styles = StyleSheet.create({
     },
     card:{
         flex:1,
-        height:90,
+        // height:90,
+        borderRadius:5,
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'center',
         backgroundColor:'white',
         elevation:1.5,
         borderRadius:3,
-        margin:3,
+        margin:5,
         padding:5,
+    },
+    card2:{
+        flex:1,
+        borderRadius:5,
+        backgroundColor:'white',
+        elevation:1.5,
+        borderRadius:5,
+        margin:5,
     },
     cardImage:{
         flex:1, 
@@ -251,6 +334,12 @@ const styles = StyleSheet.create({
         marginVertical:3,
     },
     rowListTint:{
-        flex:1, borderRadius:5, backgroundColor:'rgba(0,0,0,0.4)',padding:10, justifyContent:'flex-end'
+        flex:1, borderRadius:0, backgroundColor:'rgba(0,0,0,0.4)'
+    },
+    textSectionTitle:{
+        marginTop:10,
+        marginLeft:5,
+        fontSize:16,
+        color:'black'
     },
 })
