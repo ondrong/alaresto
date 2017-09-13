@@ -10,6 +10,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableNativeFeedback,
+  Linking,
   ListView,
   View
 } from 'react-native';
@@ -64,7 +65,8 @@ export default class Settings extends Component {
                         <TouchableOpacity style={styles.item}>
                             <Text style={styles.itemText}>Bantuan</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.item}>
+                        <TouchableOpacity style={styles.item}
+                            onPress={()=>Linking.openURL('mailto:contact@pringstudio.com')}>
                             <Text style={styles.itemText}>Laporkan Masalah</Text>
                         </TouchableOpacity>
                     </View>
