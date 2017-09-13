@@ -7,6 +7,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  RefreshControl,
   StyleSheet,
   StatusBar,
   Text,
@@ -239,8 +240,16 @@ export default class SearchResult extends Component {
                                 )}
                                 onEndReached={()=>{this.loadMorePlaces(this.state.nextPageToken)}}
                                 onEndReachedThreshold={5}
-                                refreshing={this.state.isLoadData}
-                                onRefresh={()=>console.log('refreshing..')}
+                                //refreshing={this.state.isLoadData}
+                                //onRefresh={()=>console.log('refreshing..')}
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isLoadData}
+                                        onRefresh={()=>console.log('refreshing..')}
+                                        colors={['#4caf50']}
+                                        
+                                    />
+                                }
                                 />
                             {/* {this._renderLoadData()} */}
                     </View>

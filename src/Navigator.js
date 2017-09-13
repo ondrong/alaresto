@@ -8,6 +8,7 @@ import RestoDetail from './RestoDetail';
 import Search from './Search';
 import SearchResult from './SearchResult';
 import Settings from './Settings';
+import About from './About';
 
 export const Navigator = StackNavigator({
     SplashScreen : { screen: SplashScreen},
@@ -18,4 +19,5 @@ export const Navigator = StackNavigator({
     SearchResult: {screen: SearchResult},
     RestoDetail: { screen: RestoDetail},
     Settings: {screen: Settings},
+    About: {screen: About}
 });

@@ -13,7 +13,8 @@ import {
   TouchableNativeFeedback,
   ListView,
   Linking,
-  View
+  View,
+  ViewPagerAndroid
 } from 'react-native';
 import { LoginManager } from 'react-native-fbsdk';
 import { NavigationActions } from 'react-navigation';
@@ -36,7 +37,7 @@ export default class RestoDetail extends Component {
             statusbarTransparent:true,
             photos:[],
             modalViewPhoto:false,
-            currentPhoto:'',
+            currentPhoto:0,
         }
     
     }
@@ -176,8 +177,21 @@ export default class RestoDetail extends Component {
                         <Text style={{fontSize:14,color:'#000'}}>{item.text}</Text>
                     </View>
                 )})
+            }else{
+                reviews = (
+                    <Text>Belum ada ulasan</Text>
+                )
             }
             
+            var photosPager = this.state.photos.map((item,index)=>(
+                <View key={index}
+                    style={{flex:1,justifyContent:'center'}}>
+                    <CachedImage
+                        style={{height:400}}
+                        source={{uri:item.url}}
+                    />
+                </View>
+            ))
 
             return(
                 <View style={{flex:1}}>
@@ -226,16 +240,27 @@ export default class RestoDetail extends Component {
                                     {/* <Text style={{textAlign:'center', fontSize:12, marginBottom:10}}>{this.state.place.formatted_address}</Text> */}
 
                                     {open_now}
-                                    <TouchableOpacity style={styles.placeDetailItem}
-                                        onPress={()=>Linking.openURL(this.state.place.url)}>
+
+                                    <View style={{flexDirection:'row',padding:15,borderBottomWidth:1,borderBottomColor:'#ddd',marginBottom:5}}>
+                                        <TouchableOpacity style={{flex:1,justifyContent:'center',alignItems:'center'}}
+                                            onPress={()=>Linking.openURL(this.state.place.url)}>
+                                            <Image style={{width:32,height:32}} source={require('./assets/ic_loc.png')}/>                                            
+                                            <Text>Lihat di Peta</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{flex:1,justifyContent:'center',alignItems:'center'}}
+                                            onPress={()=>Linking.openURL('tel:'+this.state.place.formatted_phone_number)}>
+                                            <Image style={{width:32,height:32}} source={require('./assets/ic_phone.png')}/>                                            
+                                            <Text>Telpon</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    {opening_hours}                                    
+                                    <View style={styles.placeDetailItem}>
                                         <Image style={{width:20,height:20,marginRight:15}} source={require('./assets/ic_loc.png')}/>
-                                        <Text>{this.state.place.formatted_address}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={()=>Linking.openURL('tel:'+this.state.place.formatted_phone_number)}>
-                                        {phone_number}
-                                    </TouchableOpacity>
-                                    {opening_hours}
+                                        <Text selectable={true} style={{flex:1}}>{this.state.place.formatted_address}</Text>
+                                    </View>
+                                    {phone_number}
+                                    
                                     
                                 </View>
 
@@ -245,8 +270,11 @@ export default class RestoDetail extends Component {
                                         horizontal={true}
                                         data={this.state.photos}
                                         keyExtractor={(item,index) => index}
-                                        renderItem={({item}) => (
-                                            <TouchableOpacity onPress={()=>this.setState({currentPhoto:item.url,modalViewPhoto:true,statusbarTransparent:false})}>
+                                        ListEmptyComponent={
+                                            <Text>Belum ada foto</Text>
+                                        }
+                                        renderItem={({item,index}) => (
+                                            <TouchableOpacity onPress={()=>this.setState({currentPhoto:index || 0, modalViewPhoto:true,statusbarTransparent:false})}>
                                                 <CachedImage 
                                                     style={{width:100,height:100,marginRight:5}} 
                                                     source={{uri:item.url}}/>
@@ -259,12 +287,12 @@ export default class RestoDetail extends Component {
                                         visible={this.state.modalViewPhoto}
                                         onRequestClose={() => this.setState({modalViewPhoto:false})}
                                         >
-                                        <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.9)',justifyContent:'center'}}>
-                                            <CachedImage
-                                                style={{height:400}}
-                                                source={{uri:this.state.currentPhoto}}
-                                            />
-                                        </View>
+                                        <ViewPagerAndroid
+                                            key={"pager"}
+                                            style={{flex:1,backgroundColor:'rgba(0,0,0,0.9)'}}
+                                            initialPage={this.state.currentPhoto}>
+                                            { photosPager }
+                                        </ViewPagerAndroid>
                                     </Modal>
                                 </View>
 

@@ -73,7 +73,11 @@ export default class Search extends Component {
                         autoCorrect={false}
                         placeholder={"Cari, misal: "+randomfood}
                         onTouchCancel={()=>this.props.navigation.goBack()}
-                        style={{flex:1,backgroundColor:'#fff',marginVertical:8,borderRadius:3,elevation:1,textAlignVertical:'center',textDecorationLine:'none',color:'#555'}}
+                        style={{flex:1,backgroundColor:'#fff',
+                            marginVertical:8,borderRadius:3,elevation:1,
+                            textAlignVertical:'center',textDecorationLine:'none',
+                            color:'#555',paddingHorizontal:10
+                        }}
                         onChangeText={(text)=>this.setState({search:text})}
                         value={this.state.search}
                         onSubmitEditing={()=>{this.search()}}
