@@ -71,7 +71,7 @@ export default class Settings extends Component {
                             <Text style={styles.itemText}>Laporkan Masalah</Text>
                         </TouchableOpacity>
                     </View>
-                        <Text style={styles.textVersion}>AlaResto v0.1</Text>
+                        <Text style={styles.textVersion}>AlaResto v1.0</Text>
                     
                 </ScrollView>
             </View>

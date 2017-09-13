@@ -94,13 +94,23 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.alaresto"
+        applicationId "com.pringstudio.alaresto"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
+        }
+    }
+    signingConfigs {
+        release {
+            if (project.hasProperty('ALARESTO_STORE_FILE')) {
+                storeFile file(ALARESTO_STORE_FILE)
+                storePassword ALARESTO_STORE_PASSWORD
+                keyAlias ALARESTO_KEY_ALIAS
+                keyPassword ALARESTO_KEY_PASSWORD
+            }
         }
     }
     splits {

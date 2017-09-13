@@ -1,4 +1,4 @@
-package com.alaresto;
+package com.pringstudio.alaresto;
 
 import android.app.Application;
 
